@@ -1,6 +1,11 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.template.loader import get_template
+from xhtml2pdf import pisa  # Import required for PDF generation
+import csv
+from .forms import UploadFileForm
+from .models import people
 # Create your views here.
 
 
@@ -38,3 +43,20 @@ def handle_uploaded_file(file):
             age=row['AGE'],
             city=row['CITY']
         )
+def generate_pdf(request):
+    template_path = 'pdf_template.html'
+    people_data = people.objects.all()
+
+    context = {'people_data': people_data}
+    template = get_template(template_path)
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename="people_data.pdf"'
+
+    # Create PDF
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    if pisa_status.err:
+        return HttpResponse('We had some errors <pre>' + html + '</pre>')
+
+    return response
