@@ -13,6 +13,8 @@ from .models import people
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 def registration_view(request):
@@ -25,13 +27,13 @@ def registration_view(request):
         # Check if passwords match
         if password != confirm_password:
             return render(request, 'registration.html', {'error': 'Passwords do not match'})
-
         # Create a new user
         user = User.objects.create_user(username=username, email=email, password=password)
 
         # Log in the user
+        # authenticated_user = authenticate(request, username=username, password=password)
         login(request, user)
-
+        
         # Redirect to a success page or home page
         return redirect('success')
 
@@ -47,6 +49,13 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
+            #Send mail after Registration of new user 
+            subject = 'User Created Successfully'
+            message = 'Congratulations! YOUR have logged in.'
+            from_email = settings.EMAIL_HOST_USER
+            recipient_list = ['carolacharya1@gmail.com']
+
+            send_mail(subject, message, from_email, recipient_list)
             # Redirect to a success page or home page
             return redirect('upload')
         else:
@@ -56,11 +65,6 @@ def login_view(request):
 
 
 
-
-# @csrf_exempt
-# def index(request):
-#     print('index Called', request.POST)
-#     return JsonResponse ({'messaghe':'Carol replied GOODJOB'})
 
 @login_required(login_url='login/')
 def upload_file(request):
@@ -88,7 +92,7 @@ def handle_uploaded_file(file):
             age=row['AGE'],
             city=row['CITY']
         )
-@login_required
+# @login_required
 def generate_pdf(request):
     template_path = 'pdf_template.html'
     people_data = people.objects.all()
@@ -107,4 +111,9 @@ def generate_pdf(request):
 
     return response
 
+
+# @csrf_exempt
+# def index(request):
+#     print('index Called', request.POST)
+#     return JsonResponse ({'messaghe':'Carol replied GOODJOB'})
 

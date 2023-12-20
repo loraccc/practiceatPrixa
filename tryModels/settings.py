@@ -27,6 +27,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tryModel',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
 
 MIDDLEWARE = [
@@ -37,8 +40,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'tryModel.middleware.set_request_data'
-    'tryModel.middleware.check_even'
+    'allauth.account.middleware.AccountMiddleware',  # Add this line
+    'tryModel.middleware.check_even',
+    # 'tryModel.middleware.set_request_data',
 ]
 
 ROOT_URLCONF = 'tryModels.urls'
@@ -71,7 +75,11 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -107,9 +115,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_HOST = "smtp.gmail.com" # google mail server
+EMAIL_PORT = 587 # TLS Port number
+EMAIL_USE_TLS = True # protocol
+EMAIL_HOST_USER = "carolacharya1@gmail.com" # gmail 
+EMAIL_HOST_PASSWORD = "tgbs xxbu jgod qqcp " # App password

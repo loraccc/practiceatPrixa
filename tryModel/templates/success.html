@@ -1,5 +1,52 @@
-<h1>GREAT YOUVE MANAGED TO FETCH THE DATA</h1>
-<h1>Success</h1>
-<p>Data successfully uploaded!</p>
+<!-- success.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
 
-<a href="{% url 'generate_pdf' %}" class="btn btn-primary">Generate PDF</a>
+        h1 {
+            color: #4caf50;
+        }
+
+        p {
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>GREAT YOU'VE MANAGED TO FETCH THE DATA</h1>
+    <h1>Success</h1>
+    <p>Data successfully uploaded!</p>
+
+    <a href="{% url 'generate_pdf' %}" class="btn">Generate PDF</a>
+</body>
+</html>
